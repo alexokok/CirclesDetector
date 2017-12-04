@@ -2,15 +2,21 @@ package com.example.mazaevav.myapplication.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import org.opencv.android.*
-
+import org.opencv.core.Core.addWeighted
+import org.opencv.core.Core.inRange
 import org.opencv.core.Mat
+import org.opencv.core.Point
+import org.opencv.core.Scalar
+import org.opencv.core.Size
+import org.opencv.imgproc.Imgproc
+import org.opencv.imgproc.Imgproc.*
 import src.main.R
 
 class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListener2 {
@@ -24,7 +30,7 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
       }
     }
 
-    fun navigateToMainActivity(activity: Activity){
+    fun navigateToMainActivity(activity: Activity) {
       val intent = Intent(activity, MainActivity::class.java)
 
       activity.startActivity(intent)
@@ -62,8 +68,10 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
   }
 
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    when(item?.itemId){
-      R.id.settings -> { callSettings() }
+    when (item?.itemId) {
+      R.id.settings -> {
+        callSettings()
+      }
       else -> super.onOptionsItemSelected(item)
     }
 
@@ -90,7 +98,54 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
   }
 
   override fun onCameraFrame(inputFrame: CameraBridgeViewBase.CvCameraViewFrame): Mat {
-    /*val input = inputFrame.gray()
+    /*val input = inputFrame.rgba()
+    val hsvImage = Mat()
+
+    val lowerHueRange = Mat()
+    val upperHueRange = Mat()
+    val hueImage = Mat()
+    val circles = Mat()
+
+    //перевожу изображение из RGB в HSV
+    cvtColor(input, hsvImage, COLOR_RGB2HSV)
+
+    inRange(hsvImage, Scalar(0.0, 100.0, 100.0), Scalar(10.0, 255.0, 255.0),
+        lowerHueRange)
+
+    inRange(hsvImage, Scalar(160.0, 100.0, 100.0), Scalar(179.0, 255.0, 255.0),
+        upperHueRange)
+
+    addWeighted(lowerHueRange, 1.0, upperHueRange, 1.0, 0.0, hueImage)
+
+    //GaussianBlur(hueImage, hueImage, Size(9.0, 9.0), 2.0, 2.0)
+    Imgproc.blur(hueImage, hueImage, Size(7.0, 7.0), Point(2.0, 2.0))
+
+
+    // ищу круги
+    HoughCircles(hueImage, circles, CV_HOUGH_GRADIENT, 1.0, (hueImage.rows() / 8).toDouble(),
+        100.0, 20.0, 0, 0)
+    Imgproc.HoughCircles(hueImage, circles, Imgproc.CV_HOUGH_GRADIENT, 2.0, 100.0,
+        100.0, 90.0, 0, 1000)
+
+
+    for (x in 0 until circles.cols()) {
+      val circleVec = circles.get(0, x) ?: break
+
+      val center = Point(circleVec[0].toInt().toDouble(), circleVec[1].toInt().toDouble())
+      val radius = circleVec[2].toInt()
+
+      Imgproc.circle(hueImage, center, 3, Scalar(0.0, 255.0, 0.0), 5)
+      Imgproc.circle(hueImage, center, radius, Scalar(0.0, 255.0, 0.0), 2)
+    }
+
+    circles.release()
+    hueImage.release()
+    input.release()
+
+    return inputFrame.rgba()*/
+
+
+    val input = inputFrame.gray()
     val circles = Mat()
 
     Imgproc.blur(input, input, Size(7.0, 7.0), Point(2.0, 2.0))
@@ -112,15 +167,17 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
     }
 
     circles.release()
-    input.release()*/
+    input.release()
+
+
     return inputFrame.rgba()
   }
 
-  private fun callSettings(){
+  private fun callSettings() {
     SettingsActivity.showSettings(this)
   }
 
-  private fun initToolbar(){
+  private fun initToolbar() {
     setSupportActionBar(toolbar)
     supportActionBar?.title = getString(R.string.app_name)
   }
