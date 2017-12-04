@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:elevation="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/indent.56"
+    android:theme="@style/ToolBarStyle"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+  
+  <TextView
+    android:id="@+id/color_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/indent.16"
+    android:padding="@dimen/indent.16"
+    android:text="@string/circle_color"
+    android:textColor="@color/colorBlack"
+    android:textSize="@dimen/text.16"
+    app:layout_constraintTop_toBottomOf="@id/toolbar"
+    app:layout_constraintStart_toStartOf="parent"/>
+
+  <TextView
+    android:id="@+id/color_value"
+    android:gravity="center|end"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/indent.16"
+    android:textSize="@dimen/text.16"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/color_title"
+    app:layout_constraintTop_toTopOf="@id/color_title"
+    app:layout_constraintBottom_toBottomOf="@id/color_title"
+    tools:text="Красный"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,12 @@
+<resources>
+  <string name="app_name">Кругодетектор</string>
+
+  <string name="action_accept">Разрешить</string>
+
+  <string name="settings">Настройки</string>
+  <string name="circle_color">Цвет круга</string>
+
+  <string name="color_dialog_title">Выберите цвет круга</string>
+
+  <string name="permission_dialog">Для работы приложения нужна камера</string>
+</resources>
