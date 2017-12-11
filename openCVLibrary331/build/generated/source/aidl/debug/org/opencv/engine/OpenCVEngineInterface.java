@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: /media/hdd/AndroidStudioProjects/MyApplication2/openCVLibrary331/src/main/aidl/org/opencv/engine/OpenCVEngineInterface.aidl
+ * Original file: C:\\Users\\almaz\\StudioProjects\\CirclesDetector\\openCVLibrary331\\src\\main\\aidl\\org\\opencv\\engine\\OpenCVEngineInterface.aidl
  */
 package org.opencv.engine;
 /**

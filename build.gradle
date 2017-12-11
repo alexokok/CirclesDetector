@@ -28,4 +28,4 @@ task clean(type: Delete) {
 
 ext.versions = [ "ANKO" : "0.10.3",
                  "CONSTRAINT" : "1.0.2",
-                 "SUPPORT" : "26.1.0"]
+                 "SUPPORT" : "26.0.2"]
