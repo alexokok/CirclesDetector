@@ -1,4 +1,4 @@
-package com.example.mazaevav.myapplication.ui
+package com.example.mazaevav.myapplication.ui.main
 
 import android.app.Activity
 import android.content.Intent
@@ -14,21 +14,20 @@ import org.opencv.core.Point
 import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
 import src.main.R
-import org.opencv.core.Core
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.core.Core.addWeighted
 import org.opencv.core.Core.inRange
 import org.opencv.core.Size
-import org.opencv.imgproc.Imgproc.COLOR_BGR2HSV
 import org.opencv.imgproc.Imgproc.COLOR_RGB2HSV
 import org.opencv.imgproc.Imgproc.CV_HOUGH_GRADIENT
 import org.opencv.imgproc.Imgproc.GaussianBlur
 import org.opencv.imgproc.Imgproc.HoughCircles
 import org.opencv.imgproc.Imgproc.cvtColor
-import android.R.attr.x
+import com.example.mazaevav.myapplication.ui.SettingsActivity
+import org.opencv.imgproc.Imgproc.medianBlur
 
 
-class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListener2 {
+class MainActivity : AppCompatActivity(), MainContract.View, CameraBridgeViewBase.CvCameraViewListener2 {
 
   companion object {
     val TAG = "src"
@@ -48,6 +47,7 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
   }
 
   private var cameraView: JavaCameraView? = null
+  private lateinit var presenter: MainContract.Presenter
 
 
   private val loaderCallback = object : BaseLoaderCallback(this) {
@@ -65,6 +65,8 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+
+    presenter = MainPresenter(context = this)
 
     initToolbar()
 
@@ -105,39 +107,7 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
   override fun onCameraViewStopped() {}
 
   override fun onCameraFrame(inputFrame: CameraBridgeViewBase.CvCameraViewFrame): Mat {
-    val hsvImage = Mat()
-    val rgbImage = inputFrame.rgba()
-    val lowerRedHueRange = Mat()
-    val upperRedHueRange = Mat()
-
-    val redHueImage = Mat()
-    val circles = Mat()
-
-    cvtColor(rgbImage, hsvImage, COLOR_RGB2HSV)
-
-    inRange(hsvImage, Scalar(0.0, 100.0, 100.0), Scalar(10.0, 255.0, 255.0),
-        lowerRedHueRange)
-    inRange(hsvImage, Scalar(160.0, 100.0, 100.0), Scalar(179.0, 255.0, 255.0),
-        upperRedHueRange)
-
-    addWeighted(lowerRedHueRange, 1.0, upperRedHueRange, 1.0, 0.0, redHueImage)
-    GaussianBlur(redHueImage, redHueImage, Size(9.0, 9.0), 2.0, 2.0)
-
-    HoughCircles(redHueImage, circles, CV_HOUGH_GRADIENT, 1.0,
-        redHueImage.rows() / 8.toDouble(), 100.0, 20.0, 0, 0)
-
-    if (circles.cols() > 0) {
-      for (x in 0 until Math.min(circles.cols(), 5)) {
-        val circleVec = circles.get(0, x) ?: break
-        val center = Point(circleVec[0].toInt().toDouble(), circleVec[1].toInt().toDouble())
-        val radius = circleVec[2].toInt()
-
-        Imgproc.circle(rgbImage, center, 3, Scalar(0.0, 255.0, 0.0), 5)
-        Imgproc.circle(rgbImage, center, radius, Scalar(0.0, 255.0, 0.0), 2)
-      }
-    }
-
-    return rgbImage
+    return presenter.onCameraFrame(inputFrame.rgba())
   }
 
   private fun callSettings() {

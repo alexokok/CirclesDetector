@@ -12,6 +12,7 @@ class PrefUtils(private val context: Context){
 
   companion object {
     const val PREF_COLOR = "pref_color"
+    const val PREF_HOUGH = "pref_hough"
   }
 
   fun getColorType(): ColorType {
@@ -19,8 +20,8 @@ class PrefUtils(private val context: Context){
 
     return when(sp.getInt(PREF_COLOR, 0)) {
       0 -> ColorType.RED
-      1 -> ColorType.BLUE
-      2 -> ColorType.GREEN
+      /*1 -> ColorType.BLUE
+      2 -> ColorType.GREEN*/
       else -> ColorType.RED
     }
   }

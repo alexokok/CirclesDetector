@@ -22,7 +22,7 @@
 
 
     <activity
-      android:name="com.example.mazaevav.myapplication.ui.MainActivity"
+      android:name="com.example.mazaevav.myapplication.ui.main.MainActivity"
       android:screenOrientation="landscape"
       android:configChanges="orientation|keyboardHidden"/>
 
