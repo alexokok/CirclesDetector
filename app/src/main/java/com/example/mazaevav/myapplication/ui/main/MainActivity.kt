@@ -1,6 +1,7 @@
 package com.example.mazaevav.myapplication.ui.main
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -10,28 +11,16 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import org.opencv.android.*
 import org.opencv.core.Mat
-import org.opencv.core.Point
-import org.opencv.core.Scalar
-import org.opencv.imgproc.Imgproc
 import src.main.R
 import org.opencv.android.CameraBridgeViewBase
-import org.opencv.core.Core.addWeighted
-import org.opencv.core.Core.inRange
-import org.opencv.core.Size
-import org.opencv.imgproc.Imgproc.COLOR_RGB2HSV
-import org.opencv.imgproc.Imgproc.CV_HOUGH_GRADIENT
-import org.opencv.imgproc.Imgproc.GaussianBlur
-import org.opencv.imgproc.Imgproc.HoughCircles
-import org.opencv.imgproc.Imgproc.cvtColor
-import com.example.mazaevav.myapplication.ui.SettingsActivity
-import org.opencv.imgproc.Imgproc.medianBlur
+import com.example.mazaevav.myapplication.ui.settings.SettingsActivity
 
 
-class MainActivity : AppCompatActivity(), MainContract.View, CameraBridgeViewBase.CvCameraViewListener2 {
+class MainActivity : AppCompatActivity(), MainContract.View,
+    CameraBridgeViewBase.CvCameraViewListener2 {
 
   companion object {
     val TAG = "src"
-    val VIEW_MODE_CANNY = 1
 
     init {
       if (!OpenCVLoader.initDebug()) {
@@ -62,11 +51,15 @@ class MainActivity : AppCompatActivity(), MainContract.View, CameraBridgeViewBas
     }
   }
 
+  override fun getContext(): Context? = this
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    presenter = MainPresenter(context = this)
+    presenter = MainPresenter()
+    presenter.attachView(this)
+    presenter.initPresenter()
 
     initToolbar()
 

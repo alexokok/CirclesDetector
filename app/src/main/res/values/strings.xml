@@ -6,7 +6,10 @@
   <string name="settings">Настройки</string>
   <string name="circle_color">Цвет круга</string>
 
+  <string name="black_white">Черно-белое изображение</string>
+
   <string name="color_dialog_title">Выберите цвет круга</string>
 
   <string name="permission_dialog">Для работы приложения нужна камера</string>
+
 </resources>

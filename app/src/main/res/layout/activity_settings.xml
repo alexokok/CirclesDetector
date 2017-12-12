@@ -40,4 +40,18 @@
     app:layout_constraintBottom_toBottomOf="@id/color_title"
     tools:text="Красный"/>
 
+  <CheckBox
+      android:id="@+id/is_black_white"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/indent.10"
+      android:layout_marginStart="@dimen/indent.10"
+      android:padding="@dimen/indent.16"
+      android:text="@string/black_white"
+      android:textColor="@color/colorBlack"
+      android:textSize="@dimen/text.16"
+      app:layout_constraintTop_toBottomOf="@id/color_title"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="src.main">
+    package="src.main">
+
+  <uses-permission android:name="android.permission.CAMERA"/>
+
+  <uses-feature android:name="android.hardware.camera" />
+  <uses-feature android:name="android.hardware.camera.autofocus" />
+  <uses-feature android:name="android.hardware.camera.front" />
+  <uses-feature android:name="android.hardware.camera.front.autofocus" />
 
   <application
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:supportsRtl="true"
-    android:theme="@style/AppTheme">
+    android:theme="@style/AppTheme"
+      android:fullBackupContent="@xml/backup_descriptor">
 
     <activity
       android:name="com.example.mazaevav.myapplication.ui.SplashActivity"
@@ -15,26 +23,17 @@
 
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-
 
     <activity
       android:name="com.example.mazaevav.myapplication.ui.main.MainActivity"
       android:screenOrientation="landscape"
       android:configChanges="orientation|keyboardHidden"/>
 
-    <activity android:name="com.example.mazaevav.myapplication.ui.SettingsActivity" />
+    <activity android:name="com.example.mazaevav.myapplication.ui.settings.SettingsActivity" />
 
   </application>
-
-  <uses-permission android:name="android.permission.CAMERA" />
-
-  <uses-feature android:name="android.hardware.camera" />
-  <uses-feature android:name="android.hardware.camera.autofocus" />
-  <uses-feature android:name="android.hardware.camera.front" />
-  <uses-feature android:name="android.hardware.camera.front.autofocus" />
 
 </manifest>

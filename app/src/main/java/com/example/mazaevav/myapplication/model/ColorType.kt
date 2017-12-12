@@ -7,7 +7,7 @@ import org.opencv.core.Scalar
  * @author Alexey Mazaev
  */
 enum class ColorType(val index: Int, val low1: Scalar, val high1: Scalar,
-    low2: Scalar, high2: Scalar) {
+    val low2: Scalar, val high2: Scalar) {
   RED(0,
       low1 = Scalar(0.0, 150.0, 100.0),
       high1 = Scalar(10.0, 255.0, 255.0),

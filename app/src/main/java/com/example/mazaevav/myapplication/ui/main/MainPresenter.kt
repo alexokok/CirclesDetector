@@ -1,7 +1,7 @@
 package com.example.mazaevav.myapplication.ui.main
 
-import android.content.Context
 import com.example.mazaevav.myapplication.model.ColorType
+import com.example.mazaevav.myapplication.ui.common.BasePresenter
 import com.example.mazaevav.myapplication.utils.PrefUtils
 import org.opencv.core.Core
 import org.opencv.core.Mat
@@ -13,28 +13,24 @@ import org.opencv.imgproc.Imgproc
 /**
  * @author Alexey Mazaev
  */
-class MainPresenter(context: Context): MainContract.Presenter {
-
-  private val prefUtils: PrefUtils = PrefUtils(context)
+class MainPresenter: BasePresenter<MainContract.View>(), MainContract.Presenter {
+  private lateinit var prefUtils: PrefUtils
 
   override fun onCameraFrame(inputMat: Mat): Mat {
-    val color = ColorType.values()[prefUtils.getColorType().index]
+    val color = ColorType.values()[0]//prefUtils.getColorType()]
     val hsvImage = Mat()
-    val rgbImage = inputMat
     val lowerRedHueRange = Mat()
     val upperRedHueRange = Mat()
 
     val redHueImage = Mat()
     val circles = Mat()
 
-    Imgproc.medianBlur(rgbImage, rgbImage, 3)
+    Imgproc.medianBlur(inputMat, inputMat, 3)
 
-    Imgproc.cvtColor(rgbImage, hsvImage, Imgproc.COLOR_RGB2HSV)
+    Imgproc.cvtColor(inputMat, hsvImage, Imgproc.COLOR_RGB2HSV)
 
-    Core.inRange(hsvImage, Scalar(0.0, 150.0, 100.0), Scalar(10.0, 255.0, 255.0),
-        lowerRedHueRange)
-    Core.inRange(hsvImage, Scalar(160.0, 150.0, 100.0), Scalar(179.0, 255.0, 255.0),
-        upperRedHueRange)
+    Core.inRange(hsvImage, color.low1, color.high1, lowerRedHueRange)
+    Core.inRange(hsvImage, color.low2, color.high2, upperRedHueRange)
 
     Core.addWeighted(lowerRedHueRange, 1.0, upperRedHueRange, 1.0, 0.0, redHueImage)
     Imgproc.GaussianBlur(redHueImage, redHueImage, Size(9.0, 9.0), 2.0, 2.0)
@@ -48,11 +44,15 @@ class MainPresenter(context: Context): MainContract.Presenter {
         val center = Point(circleVec[0].toInt().toDouble(), circleVec[1].toInt().toDouble())
         val radius = circleVec[2].toInt()
 
-        Imgproc.circle(rgbImage, center, 3, Scalar(0.0, 255.0, 0.0), 5)
-        Imgproc.circle(rgbImage, center, radius, Scalar(0.0, 255.0, 0.0), 2)
+        Imgproc.circle(inputMat, center, 3, Scalar(0.0, 255.0, 0.0), 5)
+        Imgproc.circle(inputMat, center, radius, Scalar(0.0, 255.0, 0.0), 2)
       }
     }
 
-    return rgbImage
+    return inputMat
+  }
+
+  override fun initPresenter() {
+    view?.getContext()?.let { prefUtils = PrefUtils(it) }
   }
 }

@@ -1,6 +1,7 @@
-package com.example.mazaevav.myapplication.ui
+package com.example.mazaevav.myapplication.ui.settings
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -13,8 +14,7 @@ import src.main.R
 /**
  * @author Alexey Mazaev
  */
-class SettingsActivity : AppCompatActivity() {
-
+class SettingsActivity : AppCompatActivity(), SettingsContract.View {
   companion object {
     fun showSettings(activity: Activity) {
       val intent = Intent(activity, SettingsActivity::class.java)
@@ -22,19 +22,24 @@ class SettingsActivity : AppCompatActivity() {
     }
   }
 
-  private val prefUtils: PrefUtils = PrefUtils(this)
   private lateinit var colors: List<String>
 
+  private lateinit var presenter: SettingsPresenter
+
+  override fun getContext(): Context? = this
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_settings)
 
+    presenter = SettingsPresenter()
+    presenter.attachView(this)
+    presenter.initPresenter()
+
     colors = resources.getStringArray(R.array.colors).toList()
 
     initToolbar()
     setListeners()
-    setColor()
   }
 
   private fun initToolbar(){
@@ -46,11 +51,18 @@ class SettingsActivity : AppCompatActivity() {
   private fun setListeners(){
     color_title.setOnClickListener { showColorDialog() }
     color_value.setOnClickListener { showColorDialog() }
+
+    is_black_white.setOnCheckedChangeListener { _, b ->
+      presenter.onBlackWhiteClick(b)
+    }
   }
 
-  private fun setColor(){
-    val colorType = prefUtils.getColorType()
-    color_value.text = colors[colorType.index]
+  override fun setColor(index: Int){
+    color_value.text = colors[index]
+  }
+
+  override fun setBlackWhite(isBlackWhite: Boolean) {
+    is_black_white.isChecked = isBlackWhite
   }
 
 
@@ -59,8 +71,7 @@ class SettingsActivity : AppCompatActivity() {
 
     selector(dialogTitle, colors, { dialogInterface, i ->
       color_value.text = colors[i]
-      prefUtils.setColorType(i)
-
+      presenter.onColorClick(i)
       dialogInterface.dismiss()
     })
   }

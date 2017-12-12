@@ -12,22 +12,27 @@ class PrefUtils(private val context: Context){
 
   companion object {
     const val PREF_COLOR = "pref_color"
-    const val PREF_HOUGH = "pref_hough"
+    const val PREF_BLACK_WHITE = "pref_black_white"
   }
 
-  fun getColorType(): ColorType {
+  fun getColorType(): Int {
     val sp = PreferenceManager.getDefaultSharedPreferences(context)
-
-    return when(sp.getInt(PREF_COLOR, 0)) {
-      0 -> ColorType.RED
-      /*1 -> ColorType.BLUE
-      2 -> ColorType.GREEN*/
-      else -> ColorType.RED
-    }
+    return sp.getInt(PREF_COLOR, 0)
   }
 
   fun setColorType(colorType: Int){
     val sp = PreferenceManager.getDefaultSharedPreferences(context)
     sp.edit().putInt(PREF_COLOR, colorType).apply()
   }
+
+  fun getBlackWhite(): Boolean {
+    val sp = PreferenceManager.getDefaultSharedPreferences(context)
+    return sp.getBoolean(PREF_BLACK_WHITE, false)
+  }
+
+  fun setBlackWhite(isBlackWhite: Boolean) {
+    val sp = PreferenceManager.getDefaultSharedPreferences(context)
+    sp.edit().putBoolean(PREF_BLACK_WHITE, isBlackWhite).apply()
+  }
+
 }
