@@ -44,7 +44,7 @@ class SplashActivity : AppCompatActivity() {
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
       grantResults: IntArray) {
     if(requestCode == MY_PERMISSIONS_REQUEST_CAMERA && grantResults.isNotEmpty()) {
-      if(grantResults[0] > 0) {
+      if(grantResults[0] > -1) {
         navigateToMainScreen()
       } else {
         showSecondaryPermissionsSnack()
