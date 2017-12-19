@@ -40,6 +40,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.View {
 
     initToolbar()
     setListeners()
+    presenter.getColor()
   }
 
   private fun initToolbar(){

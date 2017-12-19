@@ -17,7 +17,7 @@ class MainPresenter: BasePresenter<MainContract.View>(), MainContract.Presenter 
   private lateinit var prefUtils: PrefUtils
 
   override fun onCameraFrame(inputMat: Mat): Mat {
-    val color = ColorType.values()[0]//prefUtils.getColorType()]
+    val color = ColorType.values()[prefUtils.getColorType()]
     val hsvImage = Mat()
     val lowerRedHueRange = Mat()
     val upperRedHueRange = Mat()
