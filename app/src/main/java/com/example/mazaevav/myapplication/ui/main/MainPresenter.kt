@@ -1,6 +1,7 @@
 package com.example.mazaevav.myapplication.ui.main
 
 import com.example.mazaevav.myapplication.model.ColorType
+import com.example.mazaevav.myapplication.model.ColorType.RED
 import com.example.mazaevav.myapplication.ui.common.BasePresenter
 import com.example.mazaevav.myapplication.utils.PrefUtils
 import org.opencv.core.Core
@@ -19,24 +20,31 @@ class MainPresenter: BasePresenter<MainContract.View>(), MainContract.Presenter 
   override fun onCameraFrame(inputMat: Mat): Mat {
     val color = ColorType.values()[prefUtils.getColorType()]
     val hsvImage = Mat()
-    val lowerRedHueRange = Mat()
-    val upperRedHueRange = Mat()
 
-    val redHueImage = Mat()
+    val hueImage = Mat()
     val circles = Mat()
 
     Imgproc.medianBlur(inputMat, inputMat, 3)
 
     Imgproc.cvtColor(inputMat, hsvImage, Imgproc.COLOR_RGB2HSV)
 
-    Core.inRange(hsvImage, color.low1, color.high1, lowerRedHueRange)
-    Core.inRange(hsvImage, color.low2, color.high2, upperRedHueRange)
+    when (color) {
+      RED -> {
+        val lowerRedHueRange = Mat()
+        val upperRedHueRange = Mat()
+        Core.inRange(hsvImage, color.low1, color.high1, lowerRedHueRange)
+        Core.inRange(hsvImage, color.low2, color.high2, upperRedHueRange)
+        Core.addWeighted(lowerRedHueRange, 1.0, upperRedHueRange, 1.0, 0.0, hueImage)
+      }
+      else -> {
+        Core.inRange(hsvImage, color.low1, color.high1, hueImage)
+      }
+    }
 
-    Core.addWeighted(lowerRedHueRange, 1.0, upperRedHueRange, 1.0, 0.0, redHueImage)
-    Imgproc.GaussianBlur(redHueImage, redHueImage, Size(9.0, 9.0), 2.0, 2.0)
+    Imgproc.GaussianBlur(hueImage, hueImage, Size(9.0, 9.0), 2.0, 2.0)
 
-    Imgproc.HoughCircles(redHueImage, circles, Imgproc.CV_HOUGH_GRADIENT, 1.0,
-        redHueImage.rows() / 8.toDouble(), 100.0, 20.0, 0, 0)
+    Imgproc.HoughCircles(hueImage, circles, Imgproc.CV_HOUGH_GRADIENT, 1.0,
+        hueImage.rows() / 8.toDouble(), 100.0, 20.0, 0, 0)
 
     if (circles.cols() > 0) {
       for (x in 0 until Math.min(circles.cols(), 5)) {

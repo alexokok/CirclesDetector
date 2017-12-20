@@ -16,8 +16,8 @@ enum class ColorType(val low1: Scalar, val high1: Scalar,
       high1 = Scalar(75.0, 255.0, 255.0),
       low2 = Scalar(45.0, 100.0, 59.0),
       high2 = Scalar(75.0, 255.0, 255.0)),
-  BLUE(      low1 = Scalar(45.0, 100.0, 59.0),
-      high1 = Scalar(75.0, 255.0, 255.0),
-      low2 = Scalar(45.0, 100.0, 59.0),
-      high2 = Scalar(75.0, 255.0, 255.0))
+  BLUE(low1 = Scalar(0.0, 136.0, 0.0),
+      high1 = Scalar(180.0, 255.0, 255.0),
+      low2 = Scalar(0.0, 136.0, 0.0),
+      high2 = Scalar(180.0, 255.0, 255.0))
 }

@@ -2,7 +2,7 @@
 <resources>
   <string-array name="colors">
     <item>Красный</item>
-    <item>Синий</item>
     <item>Зеленый</item>
+    <item>Синий</item>
   </string-array>
 </resources>
